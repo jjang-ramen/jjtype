@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Imitation Game – Loading Typefoundry</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://loadingdots.space/Tabs/Imitation%20Game/" />
+
+  <link rel="stylesheet" href="../../css/style.css" />
+
+  <style>
+    @font-face {
+      font-family: "NunitoVF";
+      src: url("../Nunito/NunitoVF.ttf") format("truetype");
+      font-weight: 100 900;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: "ImitationGame";
+      src: url("./Imitation.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      background-color: #000;
+    }
+
+    body {
+      padding-top: 60px;
+      font-family: "NunitoVF", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      color: #ffffff;
+    }
+
+    #glcanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .top {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 24px;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .brand-link {
+      text-decoration: none;
+      color: #ffffff;
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      white-space: nowrap;
+    }
+
+    .brand-link:hover {
+      opacity: 0.65;
+    }
+
+    .bar-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: #ffffff;
+      font-size: 0.85rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding-bottom: 2px;
+      border-bottom: 2px solid transparent;
+      transition: opacity 0.2s ease, border-color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      opacity: 0.7;
+    }
+
+    .nav-link.main-link {
+      border-bottom-color: #ffffff;
+    }
+
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+      padding: 80px 7vw 72px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-block {
+      margin-bottom: 40px;
+      padding: 32px 28px 36px;
+      border-radius: 24px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .hero-label {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.75;
+      margin-bottom: 10px;
+    }
+
+    /* POSI axis demo */
+    .imitation-variable {
+      font-family: "ImitationGame", monospace;
+      /* POSI axis controlled via JS/font-variation-settings */
+    }
+
+    .hero-name {
+      font-size: clamp(44px, 7.2vw, 88px);
+      line-height: 0.9;
+      margin-bottom: 10px;
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      opacity: 0.9;
+      max-width: 620px;
+    }
+
+    .hero-meta {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    .hero-meta span + span::before {
+      content: "•";
+      margin: 0 10px;
+      opacity: 0.6;
+    }
+
+    .panel-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .panel {
+      flex: 1 1 260px;
+      padding: 20px 22px 24px;
+      border-radius: 20px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      font-size: 0.95rem;
+    }
+
+    .panel h2 {
+      font-size: 1rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin: 0 0 12px;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-top: 6px;
+      transition: background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    }
+
+    .download-btn:hover {
+      background-color: #ffffff;
+      color: #000000;
+      transform: translateY(-1px);
+    }
+
+    .tester-block {
+      padding: 28px 24px 32px;
+      border-radius: 24px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .tester-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .tester-title {
+      font-size: 1rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .tester-meta {
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+
+    .control-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px 28px;
+      align-items: center;
+      margin-bottom: 20px;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 220px;
+    }
+
+    .control-group label {
+      white-space: nowrap;
+    }
+
+    .control-group input[type="range"] {
+      flex: 1;
+      accent-color: #ffffff;
+    }
+
+    .control-value {
+      min-width: 48px;
+      text-align: right;
+      opacity: 0.9;
+    }
+
+    .tester-area {
+      width: 100%;
+      min-height: 220px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      background: rgba(0, 0, 0, 0.3);
+      color: #ffffff;
+      padding: 20px 22px;
+      font-size: 40px;
+      line-height: 1.2;
+      resize: vertical;
+      outline: none;
+      font-family: "ImitationGame", monospace;
+    }
+
+    .tester-area::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    @media (max-width: 768px) {
+      .page-wrap {
+        padding: 80px 4vw 60px;
+      }
+      .tester-area {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="glcanvas"></canvas>
+
+  <!-- NAVBAR -->
+  <div class="top">
+    <div class="bar">
+      <a href="https://loadingdots.space" class="brand-link">loadingdots.space</a>
+      <div class="bar-links">
+        <a href="https://loadingdots.space/#home" class="nav-link">Home</a>
+        <a href="https://loadingdots.space/#menu" class="nav-link main-link">All Fonts</a>
+        <a href="https://loadingdots.space/#about-contact" class="nav-link">About</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="page-wrap">
+    <section class="hero-block">
+      <div class="hero-label">Pixel / Morse Variable Typeface</div>
+      <div class="hero-name imitation-variable">Imitation Game</div>
+      <p class="hero-sub">
+        This typeface is inspired by morse code and classic pixel displays.
+        It’s ideal for headlines, posters, and interfaces that reference early computing,
+        cryptography, or retro game aesthetics.
+      </p>
+      <div class="hero-meta">
+        <span>Designer: Jang, JunYong</span>
+        <span>Axis: POSI (0–100)</span>
+        <span>Format: TTF</span>
+      </div>
+    </section>
+
+    <section class="panel-row">
+      <article class="panel">
+        <h2>Download</h2>
+        <p>
+          Download the test version of Imitation Game and use it in your own
+          interfaces, posters, and title designs.
+        </p>
+        <a href="./Imitation.ttf" download class="download-btn">
+          Download&nbsp;Imitation.ttf
+        </a>
+      </article>
+
+      <article class="panel">
+        <h2>Notes</h2>
+        <p>
+          The POSI axis shifts the relative position and spacing rhythm of the
+          pixel marks, suggesting scanning, decoding, and signal drift.
+        </p>
+      </article>
+    </section>
+
+    <section class="tester-block">
+      <div class="tester-head">
+        <div class="tester-title">Variable Tester</div>
+        <div class="tester-meta">
+          Adjust size and scrub the POSI axis to feel the shifting signal.
+        </div>
+      </div>
+
+      <div class="control-row">
+        <div class="control-group">
+          <label for="sizeSlider">Font size</label>
+          <input id="sizeSlider" type="range" min="20" max="120" value="48" />
+          <span id="sizeValue" class="control-value">48 px</span>
+        </div>
+
+        <div class="control-group">
+          <label for="posiSlider">POSI axis</label>
+          <input id="posiSlider" type="range" min="0" max="100" value="50" />
+          <span id="posiValue" class="control-value">50</span>
+        </div>
+
+        <div class="control-group">
+          <label for="animateToggle">Animate</label>
+          <input id="animateToggle" type="checkbox" />
+          <span class="control-value">on / off</span>
+        </div>
+      </div>
+
+      <textarea
+        id="imitationTester"
+        class="tester-area imitation-variable"
+        placeholder="TYPE YOUR SIGNAL, CODE, OR MESSAGE HERE.">
+... --- ...   IMITATION GAME   2025
+      </textarea>
+    </section>
+  </main>
+
+  <!-- WebGL shaders (same as main) -->
+  <script type="x-shader/x-vertex" id="vertexShader">
+    attribute vec2 position;
+    void main() {
+      gl_Position = vec4(position, 0.0, 1.0);
+    }
+  </script>
+
+  <script type="x-shader/x-fragment" id="fragmentShader">
+  #ifdef GL_ES
+  precision mediump float;
+  #endif
+
+  uniform float time;
+  uniform vec2 resolution;
+
+  const float PI  = 3.14159265;
+  const float TAU = 6.2831853;
+
+  vec3 angleColor(float a) {
+    float r = 0.5 + 0.5 * sin(a + 0.0);
+    float g = 0.5 + 0.5 * sin(a + 2.0944);
+    float b = 0.5 + 0.5 * sin(a + 4.18879);
+    return vec3(r, g, b);
+  }
+
+  void main() {
+    vec2 center = resolution * 0.5;
+    float minRes = min(resolution.x, resolution.y);
+    vec2 uv = (gl_FragCoord.xy - center) / minRes;
+
+    float radius = length(uv);
+    float angle  = atan(uv.y, uv.x);
+
+    if (angle < 0.0) {
+      angle += TAU;
+    }
+
+    float progress = fract(time * 0.25) * TAU;
+
+    float diff = angle - progress;
+    diff = mod(diff + PI, TAU) - PI;
+
+    float arcLength = 0.9;
+    float edgeSoft  = 0.4;
+
+    float arc = smoothstep(arcLength, arcLength - edgeSoft, abs(diff));
+
+    float inner = 0.24;
+    float outer = 0.28;
+
+    float ring = smoothstep(outer, outer - 0.01, radius) *
+                 smoothstep(inner, inner + 0.01, radius);
+
+    vec3 bg = vec3(0.0);
+    vec3 ringColor = angleColor(angle);
+
+    float mask = ring * arc;
+    vec3 color = mix(bg, ringColor, mask);
+
+    gl_FragColor = vec4(color, 1.0);
+  }
+  </script>
+
+  <script>
+    const canvas = document.getElementById('glcanvas');
+    const gl = canvas.getContext('webgl');
+    if (!gl) alert('WebGL not supported');
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function createShader(type, src) {
+      const shader = gl.createShader(type);
+      gl.shaderSource(shader, src);
+      gl.compileShader(shader);
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        console.error(gl.getShaderInfoLog(shader));
+      }
+      return shader;
+    }
+
+    const vs = createShader(gl.VERTEX_SHADER, document.getElementById('vertexShader').text);
+    const fs = createShader(gl.FRAGMENT_SHADER, document.getElementById('fragmentShader').text);
+    const prog = gl.createProgram();
+    gl.attachShader(prog, vs);
+    gl.attachShader(prog, fs);
+    gl.linkProgram(prog);
+    gl.useProgram(prog);
+
+    const vertices = new Float32Array([
+      -1, -1,
+       1, -1,
+      -1,  1,
+      -1,  1,
+       1, -1,
+       1,  1
+    ]);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+    const posLoc = gl.getAttribLocation(prog, 'position');
+    gl.enableVertexAttribArray(posLoc);
+    gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+
+    const timeLoc = gl.getUniformLocation(prog, 'time');
+    const resLoc  = gl.getUniformLocation(prog, 'resolution');
+
+    function render(t) {
+      gl.uniform1f(timeLoc, t * 0.001);
+      gl.uniform2f(resLoc, canvas.width, canvas.height);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+
+    // POSI axis controls
+    const sizeSlider    = document.getElementById('sizeSlider');
+    const sizeValue     = document.getElementById('sizeValue');
+    const posiSlider    = document.getElementById('posiSlider');
+    const posiValue     = document.getElementById('posiValue');
+    const animateToggle = document.getElementById('animateToggle');
+    const tester        = document.getElementById('imitationTester');
+    const imitationEls  = document.querySelectorAll('.imitation-variable');
+
+    function applyPosi(v) {
+      imitationEls.forEach(el => {
+        el.style.fontVariationSettings = `"POSI" ${v}`;
+      });
+      tester.style.fontVariationSettings = `"POSI" ${v}`;
+    }
+
+    function updateSize() {
+      const size = sizeSlider.value;
+      tester.style.fontSize = size + 'px';
+      sizeValue.textContent = size + ' px';
+    }
+
+    function updatePosiFromSlider() {
+      const v = posiSlider.value;
+      posiValue.textContent = v;
+      applyPosi(v);
+    }
+
+    sizeSlider.addEventListener('input', updateSize);
+    posiSlider.addEventListener('input', () => {
+      animateToggle.checked = false;
+      animating = false;
+      updatePosiFromSlider();
+    });
+
+    let animating = false;
+    let animStart = null;
+
+    function animatePosi(ts) {
+      if (!animating) return;
+      if (!animStart) animStart = ts;
+      const t = (ts - animStart) / 1000;
+      const v = Math.round((Math.sin(t) + 1) * 50);
+      posiSlider.value = v;
+      posiValue.textContent = v;
+      applyPosi(v);
+      requestAnimationFrame(animatePosi);
+    }
+
+    animateToggle.addEventListener('change', () => {
+      animating = animateToggle.checked;
+      animStart = null;
+      if (animating) requestAnimationFrame(animatePosi);
+    });
+
+    // init
+    updateSize();
+    updatePosiFromSlider();
+  </script>
+</body>
+</html>
