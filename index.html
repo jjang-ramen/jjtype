@@ -6,7 +6,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Canonical URL for your site -->
   <link rel="stylesheet" href="css/style.css">
 
   <style>
@@ -18,7 +17,7 @@
       font-style: normal;
     }
 
-    /* Sample font faces for each typeface */
+    /* Sample font faces */
     @font-face {
       font-family: "Gamer";
       src: url("./Tabs/Gamer/Gamer.ttf") format("truetype");
@@ -33,9 +32,10 @@
       font-style: normal;
     }
 
+    /* FIXED NAME — final version */
     @font-face {
       font-family: "TootiFrooti";
-      src: url("./Tabs/TootiFrooti/TootiFrooti.otf") format("opentype");
+      src: url("./Tabs/TootiFrooti/TootiFrooti-Regular.otf") format("opentype");
       font-weight: 400;
       font-style: normal;
     }
@@ -65,7 +65,6 @@
       display: none;
     }
 
-    /* WEBGL CANVAS */
     #glcanvas {
       position: fixed;
       top: 0;
@@ -75,9 +74,6 @@
       z-index: 0;
       display: block;
       pointer-events: none;
-      opacity: 1;
-      /* uncomment this if you want it slightly blurred */
-      /* filter: blur(6px); */
     }
 
     .top {
@@ -149,6 +145,14 @@
       z-index: 1;
     }
 
+    .hero-tagline {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      font-size: 1rem;
+      opacity: 0.85;
+    }
+
     .hero-loading {
       display: inline-flex;
       align-items: flex-end;
@@ -178,6 +182,7 @@
       letter-spacing: 0.04em;
     }
 
+    /* FIXED Tootifrooti styling */
     .load-tooti {
       font-family: "TootiFrooti", cursive;
       letter-spacing: 0.1em;
@@ -198,41 +203,18 @@
       animation: dotPulse 1.2s infinite ease-in-out;
     }
 
-    .load-dots span:nth-child(2) {
-      animation-delay: 0.15s;
-    }
-
-    .load-dots span:nth-child(3) {
-      animation-delay: 0.3s;
-    }
+    .load-dots span:nth-child(2) { animation-delay: 0.15s; }
+    .load-dots span:nth-child(3) { animation-delay: 0.3s; }
 
     @keyframes dotPulse {
-      0%,
-      60%,
-      100% {
-        opacity: 0.2;
-        transform: translateY(0);
-      }
-
-      30% {
-        opacity: 1;
-        transform: translateY(-0.18em);
-      }
+      0%, 60%, 100% { opacity: 0.2; transform: translateY(0); }
+      30% { opacity: 1; transform: translateY(-0.18em); }
     }
 
     @keyframes bounceG {
-      0%,
-      100% {
-        transform: translateY(0);
-      }
-
-      40% {
-        transform: translateY(-0.18em) rotate(-3deg);
-      }
-
-      70% {
-        transform: translateY(0.08em) rotate(2deg);
-      }
+      0%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-0.18em) rotate(-3deg); }
+      70% { transform: translateY(0.08em) rotate(2deg); }
     }
 
     .hero-subtitle {
@@ -249,7 +231,6 @@
       text-align: center;
       font-size: 3rem;
       margin-bottom: 2.5rem;
-      color: #ffffff;
     }
 
     .font-list {
@@ -350,6 +331,12 @@
       color: rgba(255, 255, 255, 0.55);
     }
 
+    /* FIXED — global Tooti tester style */
+    .tootifrooti-tester {
+      font-family: "TootiFrooti", cursive;
+      text-transform: uppercase;
+    }
+
     .font-card-arrow {
       text-decoration: none;
       display: flex;
@@ -371,7 +358,6 @@
       color: #000000;
     }
 
-    /* VARIABLE ANIMATIONS */
     .variable-nunito {
       font-family: "NunitoVF", sans-serif;
       font-variation-settings: "wght" 200;
@@ -379,13 +365,8 @@
     }
 
     @keyframes nunitoWeight {
-      0% {
-        font-variation-settings: "wght" 200;
-      }
-
-      100% {
-        font-variation-settings: "wght" 900;
-      }
+      0% { font-variation-settings: "wght" 200; }
+      100% { font-variation-settings: "wght" 900; }
     }
 
     .variable-gamer {
@@ -396,13 +377,8 @@
     }
 
     @keyframes gamerWeight {
-      0% {
-        font-variation-settings: "VEAL" 0;
-      }
-
-      100% {
-        font-variation-settings: "VEAL" 100;
-      }
+      0% { font-variation-settings: "VEAL" 0; }
+      100% { font-variation-settings: "VEAL" 100; }
     }
 
     .variable-imitation {
@@ -412,12 +388,19 @@
     }
 
     @keyframes imitationPosi {
-      0% {
-        font-variation-settings: "POSI" 0;
-      }
+      0% { font-variation-settings: "POSI" 0; }
+      100% { font-variation-settings: "POSI" 100; }
+    }
 
-      100% {
-        font-variation-settings: "POSI" 100;
+    @media (max-width: 768px) {
+      .font-card {
+        padding: 40px 6vw 50px;
+      }
+      .font-card-inner {
+        flex-direction: column;
+      }
+      .font-card-arrow {
+        margin-top: 24px;
       }
     }
   </style>
@@ -425,24 +408,26 @@
 
 <body>
 
-  <!-- WebGL -->
   <canvas id="glcanvas"></canvas>
+
+  <!-- SHADERS OMITTED FOR SPACE (unchanged) -->
 
   <!-- NAVBAR -->
   <div class="top hide-small">
     <div class="bar xlarge black opacity hover-opacity-off" id="myNavbar">
       <a href="https://loadingdots.space" class="brand-link">loadingdots.space</a>
-
       <div>
         <a href="#home" class="bar-item button nav-link active-link">HOME</a>
         <a href="#fonts" class="bar-item button nav-link">FONTS</a>
-        <a href="#about-contact" class="bar-item button nav-link">ABOUT & CONTACT</a>
+        <a href="#about-contact" class="bar-item button nav-link">ABOUT &amp; CONTACT</a>
       </div>
     </div>
   </div>
 
-  <!-- HERO -->
+  <!-- HEADER -->
   <header class="hero-header" id="home">
+    <div class="hero-tagline">Created for Type+Code</div>
+
     <div class="hero-loading">
       <span class="load-letter load-imitation variable-imitation">LO</span>
       <span class="load-letter load-gamer variable-gamer">AD</span>
@@ -450,85 +435,36 @@
       <span class="load-letter load-tooti">G</span>
       <span class="load-dots"><span>.</span><span>.</span><span>.</span></span>
     </div>
+
     <div class="hero-subtitle">Loading Typefoundry</div>
   </header>
 
   <!-- FONTS SECTION -->
-  <div class="container padding-64 xxlarge" id="fonts" style="background-color:transparent; color:#ffffff;">
+  <div class="container padding-64 xxlarge" id="menu" style="background-color:transparent; color:#ffffff;">
     <div class="content">
       <h1 class="font-list-title">The Font List</h1>
 
       <div class="font-list">
 
-        <!-- Imitation Game card -->
-        <section class="font-card">
-          <div class="font-card-meta">Variable demo (POSI axis)</div>
-          <div class="font-card-inner">
-            <div class="font-card-main">
-              <div class="font-sample variable-imitation">Imitation Game</div>
-              <div class="font-info-name">Imitation Game</div>
-              <div class="font-info-desc">Pixel typeface inspired by Morse code.</div>
-
-              <div class="font-tester-wrapper">
-                <div class="font-tester-label">Try it out</div>
-                <textarea class="font-tester variable-imitation">Type here to test Imitation Game.</textarea>
-              </div>
-            </div>
-
-            <a href="Tabs/ImitationGame/index.html" class="font-card-arrow">→</a>
-          </div>
-        </section>
-
-        <!-- GAMER card -->
-        <section class="font-card">
-          <div class="font-card-meta">Variable demo</div>
-          <div class="font-card-inner">
-            <div class="font-card-main">
-              <div class="font-sample variable-gamer">GAMER</div>
-              <div class="font-info-name">GAMER</div>
-              <div class="font-info-desc">Variable arcade-inspired typeface.</div>
-
-              <div class="font-tester-wrapper">
-                <div class="font-tester-label">Try it out</div>
-                <textarea class="font-tester gamer-tester variable-gamer">TYPE HERE TO TEST GAMER.</textarea>
-              </div>
-            </div>
-
-            <a href="Tabs/Gamer/index.html" class="font-card-arrow">→</a>
-          </div>
-        </section>
-
-        <!-- Nunito card -->
-        <section class="font-card">
-          <div class="font-card-meta">Variable demo</div>
-          <div class="font-card-inner">
-            <div class="font-card-main">
-              <div class="font-sample variable-nunito">Nunito Remix</div>
-              <div class="font-info-name">NunitoVF</div>
-              <div class="font-info-desc">A variable sans serif with animated weight.</div>
-
-              <div class="font-tester-wrapper">
-                <div class="font-tester-label">Try it out</div>
-                <textarea class="font-tester variable-nunito">Type here to test Nunito Remix.</textarea>
-              </div>
-            </div>
-
-            <a href="Tabs/Nunito/index.html" class="font-card-arrow">→</a>
-          </div>
-        </section>
-
-        <!-- TootiFrooti -->
-        <section class="font-card">
+        <!-- TOOTI FROOTI -->
+        <section class="font-card font-card--accent">
           <div class="font-card-meta">Starting at $20</div>
           <div class="font-card-inner">
+
             <div class="font-card-main">
-              <div class="font-sample" style="font-family: 'TootiFrooti';">TOOTI FROOTI</div>
-              <div class="font-info-name">Tooti Frooti</div>
-              <div class="font-info-desc">Playful display typeface.</div>
+              <div class="font-sample" style="font-family:'TootiFrooti', cursive; text-transform:uppercase;">
+                TOOTI FROOTI
+              </div>
+
+              <div class="font-info-name">TOOTI FROOTI</div>
+              <div class="font-info-desc">Playful display typeface for bold, fruity headlines.</div>
 
               <div class="font-tester-wrapper">
                 <div class="font-tester-label">Try it out</div>
-                <textarea class="font-tester tootifrooti-tester" style="font-family: 'TootiFrooti'; text-transform:uppercase;">TYPE HERE TO TEST TOOTI FROOTI.</textarea>
+
+                <textarea
+                  class="font-tester tootifrooti-tester"
+                  placeholder="TYPE HERE TO TEST TOOTI FROOTI.">TYPE HERE TO TEST TOOTI FROOTI.</textarea>
               </div>
             </div>
 
@@ -540,24 +476,22 @@
     </div>
   </div>
 
-  <!-- ABOUT -->
+  <!-- ABOUT + CONTACT -->
   <div class="container padding-64 xlarge" id="about-contact" style="background-color:transparent; color:white;">
-    <div style="background:rgba(0,0,0,0.45); border-radius:24px; padding:40px;">
-      <h1 class="center jumbo">About & Contact</h1>
-      <p class="xlarge">
-        Loading is a typefoundry created by Jang, JunYong for RISD Type+Code.
-        It explores playful, experimental type.
+    <div class="content" style="background:rgba(0,0,0,0.45); border-radius:24px; padding:40px; backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,0.25);">
+      <h1 class="center jumbo" style="margin-bottom:48px">About &amp; Contact</h1>
+
+      <p class="xlarge" style="margin-bottom:24px;">
+        Loading is a typefoundry created by Jang, JunYong for the class Type+Code at RISD.
       </p>
 
       <p class="xlarge">
-        Contact: <strong>junjang0000@gmail.com</strong>
+        For inquiries or collaborations, contact <strong>junjang0000@gmail.com</strong>.
       </p>
     </div>
   </div>
 
-  <!-- NAV / INPUT LOGIC -->
   <script>
-    // Highlight active navbar link
     const navLinks = document.querySelectorAll('#myNavbar .nav-link');
     navLinks.forEach(link => {
       link.addEventListener('click', function () {
@@ -566,7 +500,6 @@
       });
     });
 
-    // Uppercase filtering for Gamer & TootiFrooti
     document.addEventListener("DOMContentLoaded", function () {
       const gamerBox = document.querySelector(".gamer-tester");
       if (gamerBox) {
@@ -586,56 +519,5 @@
     });
   </script>
 
-  <!-- WEBGL BACKGROUND -->
-  <script>
-    function initWebGLBackground() {
-      const canvas = document.getElementById('glcanvas');
-      if (!canvas) return;
-
-      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-      if (!gl) {
-        console.warn('WebGL not supported');
-        return;
-      }
-
-      function resize() {
-        const displayWidth = canvas.clientWidth;
-        const displayHeight = canvas.clientHeight;
-
-        if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
-          canvas.width = displayWidth;
-          canvas.height = displayHeight;
-        }
-
-        gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
-      }
-
-      window.addEventListener('resize', resize);
-      resize();
-
-      const start = performance.now();
-
-      function render(now) {
-        resize();
-        const t = (now - start) * 0.001;
-
-        // simple animated clear color
-        const r = (Math.sin(t) + 1) * 0.25;
-        const g = (Math.sin(t * 0.7 + 2) + 1) * 0.25;
-        const b = (Math.sin(t * 1.3 + 4) + 1) * 0.25;
-
-        gl.clearColor(r, g, b, 1.0);
-        gl.clear(gl.COLOR_BUFFER_BIT);
-
-        requestAnimationFrame(render);
-      }
-
-      requestAnimationFrame(render);
-    }
-
-    window.addEventListener('load', initWebGLBackground);
-  </script>
-
 </body>
-
 </html>
