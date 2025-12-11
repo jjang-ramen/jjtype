@@ -5,7 +5,6 @@
   <title>NunitoVF – Loading Typefoundry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-
   <link rel="stylesheet" href="../../css/style.css" />
 
   <style>
@@ -492,27 +491,24 @@ Loading Typefoundry — Nunito Remix
     const timeLoc = gl.getUniformLocation(prog, 'time');
     const resLoc  = gl.getUniformLocation(prog, 'resolution');
 
-    function render(t) {
-      gl.uniform1f(timeLoc, t * 0.001);
-      gl.uniform2f(resLoc, canvas.width, canvas.height);
-      gl.drawArrays(gl.TRIANGLES, 0, 6);
-      requestAnimationFrame(render);
-    }
-    requestAnimationFrame(render);
-
-    // Nunito variable controls
+    // === Nunito variable controls ===
     const sizeSlider    = document.getElementById('sizeSlider');
     const sizeValue     = document.getElementById('sizeValue');
     const wghtSlider    = document.getElementById('wghtSlider');
     const wghtValue     = document.getElementById('wghtValue');
     const animateToggle = document.getElementById('animateToggle');
     const tester        = document.getElementById('nunitoTester');
+
     const nunitoEls     = document.querySelectorAll('.nunito-variable');
+    const heroName      = document.querySelector('.hero-name.nunito-variable');
 
     function applyWght(v) {
+      // Apply slider / tester animation to all Nunito elements EXCEPT the hero title
       nunitoEls.forEach(el => {
-        el.style.fontVariationSettings = `"wght" ${v}`;
-        el.style.fontWeight = v;
+        if (el !== heroName) {
+          el.style.fontVariationSettings = `"wght" ${v}`;
+          el.style.fontWeight = v;
+        }
       });
       tester.style.fontVariationSettings = `"wght" ${v}`;
       tester.style.fontWeight = v;
@@ -559,6 +555,26 @@ Loading Typefoundry — Nunito Remix
 
     updateSize();
     updateWghtFromSlider();
+
+    // === Render loop: WebGL + hero title animation ===
+    function render(t) {
+      const time = t * 0.001;
+
+      gl.uniform1f(timeLoc, time);
+      gl.uniform2f(resLoc, canvas.width, canvas.height);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+      // Constant animation for "Nunito Remix" hero title (200–900)
+      if (heroName) {
+        const w = 200 + (Math.sin(time * 1.2) + 1) * 350; // 200–900 range
+        const wRounded = Math.round(w);
+        heroName.style.fontVariationSettings = `"wght" ${wRounded}`;
+        heroName.style.fontWeight = wRounded;
+      }
+
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
   </script>
 </body>
 </html>
