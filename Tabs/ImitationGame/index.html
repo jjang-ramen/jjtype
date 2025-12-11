@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Canonical URL -->
-  <link rel="canonical" href="https://loadingdots.space/Tabs/Imitation%20Game/" />
 
   <link rel="stylesheet" href="../../css/style.css" />
 
@@ -131,7 +130,12 @@
       margin-bottom: 10px;
     }
 
-    /* POSI axis demo */
+    /* Hero word – its own class so it can animate constantly */
+    .imitation-hero {
+      font-family: "ImitationGame", monospace;
+    }
+
+    /* POSI axis demo for other elements (tester) */
     .imitation-variable {
       font-family: "ImitationGame", monospace;
       /* POSI axis controlled via JS/font-variation-settings */
@@ -319,7 +323,8 @@
   <main class="page-wrap">
     <section class="hero-block">
       <div class="hero-label">Pixel / Morse Variable Typeface</div>
-      <div class="hero-name imitation-variable">Imitation Game</div>
+      <!-- CONSTANTLY ANIMATED POSI HERO -->
+      <div class="hero-name imitation-hero">Imitation Game</div>
       <p class="hero-sub">
         This typeface is inspired by morse code and classic pixel displays.
         It’s ideal for headlines, posters, and interfaces that reference early computing,
@@ -512,7 +517,18 @@
     }
     requestAnimationFrame(render);
 
-    // POSI axis controls
+    // ===== CONSTANT HERO ANIMATION (POSI) =====
+    const heroTitle = document.querySelector('.imitation-hero');
+    function animateHeroPosi(ts) {
+      if (!heroTitle) return;
+      const t = ts / 1000;              // seconds
+      const v = Math.round((Math.sin(t * 0.7) + 1) * 50); // 0–100
+      heroTitle.style.fontVariationSettings = `"POSI" ${v}`;
+      requestAnimationFrame(animateHeroPosi);
+    }
+    requestAnimationFrame(animateHeroPosi);
+
+    // POSI axis controls for tester
     const sizeSlider    = document.getElementById('sizeSlider');
     const sizeValue     = document.getElementById('sizeValue');
     const posiSlider    = document.getElementById('posiSlider');
