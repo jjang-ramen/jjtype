@@ -22,14 +22,14 @@
     @font-face {
       font-family: "Gamer";
       src: url("./Tabs/Gamer/Gamer.ttf") format("truetype");
-      font-weight: 0 100; 
+      font-weight: 0 100;
       font-style: normal;
     }
 
     @font-face {
       font-family: "ImitationGame";
       src: url("./Tabs/ImitationGame/Imitation.ttf") format("truetype");
-      font-weight: 400; 
+      font-weight: 400;
       font-style: normal;
     }
 
@@ -65,6 +65,7 @@
       display: none;
     }
 
+    /* WEBGL CANVAS */
     #glcanvas {
       position: fixed;
       top: 0;
@@ -75,6 +76,8 @@
       display: block;
       pointer-events: none;
       opacity: 1;
+      /* uncomment this if you want it slightly blurred */
+      /* filter: blur(6px); */
     }
 
     .top {
@@ -204,10 +207,13 @@
     }
 
     @keyframes dotPulse {
-      0%, 60%, 100% {
+      0%,
+      60%,
+      100% {
         opacity: 0.2;
         transform: translateY(0);
       }
+
       30% {
         opacity: 1;
         transform: translateY(-0.18em);
@@ -215,12 +221,15 @@
     }
 
     @keyframes bounceG {
-      0%, 100% {
+      0%,
+      100% {
         transform: translateY(0);
       }
+
       40% {
         transform: translateY(-0.18em) rotate(-3deg);
       }
+
       70% {
         transform: translateY(0.08em) rotate(2deg);
       }
@@ -370,8 +379,13 @@
     }
 
     @keyframes nunitoWeight {
-      0% { font-variation-settings: "wght" 200; }
-      100% { font-variation-settings: "wght" 900; }
+      0% {
+        font-variation-settings: "wght" 200;
+      }
+
+      100% {
+        font-variation-settings: "wght" 900;
+      }
     }
 
     .variable-gamer {
@@ -382,8 +396,13 @@
     }
 
     @keyframes gamerWeight {
-      0% { font-variation-settings: "VEAL" 0; }
-      100% { font-variation-settings: "VEAL" 100; }
+      0% {
+        font-variation-settings: "VEAL" 0;
+      }
+
+      100% {
+        font-variation-settings: "VEAL" 100;
+      }
     }
 
     .variable-imitation {
@@ -393,8 +412,13 @@
     }
 
     @keyframes imitationPosi {
-      0% { font-variation-settings: "POSI" 0; }
-      100% { font-variation-settings: "POSI" 100; }
+      0% {
+        font-variation-settings: "POSI" 0;
+      }
+
+      100% {
+        font-variation-settings: "POSI" 100;
+      }
     }
   </style>
 </head>
@@ -429,7 +453,7 @@
     <div class="hero-subtitle">Loading Typefoundry</div>
   </header>
 
-  <!-- FONTS SECTION (UPDATED ID) -->
+  <!-- FONTS SECTION -->
   <div class="container padding-64 xxlarge" id="fonts" style="background-color:transparent; color:#ffffff;">
     <div class="content">
       <h1 class="font-list-title">The Font List</h1>
@@ -504,10 +528,7 @@
 
               <div class="font-tester-wrapper">
                 <div class="font-tester-label">Try it out</div>
-                <textarea 
-                  class="font-tester tootifrooti-tester"
-                  style="font-family: 'TootiFrooti'; text-transform:uppercase;"
-                >TYPE HERE TO TEST TOOTI FROOTI.</textarea>
+                <textarea class="font-tester tootifrooti-tester" style="font-family: 'TootiFrooti'; text-transform:uppercase;">TYPE HERE TO TEST TOOTI FROOTI.</textarea>
               </div>
             </div>
 
@@ -534,6 +555,7 @@
     </div>
   </div>
 
+  <!-- NAV / INPUT LOGIC -->
   <script>
     // Highlight active navbar link
     const navLinks = document.querySelectorAll('#myNavbar .nav-link');
@@ -564,5 +586,56 @@
     });
   </script>
 
+  <!-- WEBGL BACKGROUND -->
+  <script>
+    function initWebGLBackground() {
+      const canvas = document.getElementById('glcanvas');
+      if (!canvas) return;
+
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) {
+        console.warn('WebGL not supported');
+        return;
+      }
+
+      function resize() {
+        const displayWidth = canvas.clientWidth;
+        const displayHeight = canvas.clientHeight;
+
+        if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+          canvas.width = displayWidth;
+          canvas.height = displayHeight;
+        }
+
+        gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+
+      const start = performance.now();
+
+      function render(now) {
+        resize();
+        const t = (now - start) * 0.001;
+
+        // simple animated clear color
+        const r = (Math.sin(t) + 1) * 0.25;
+        const g = (Math.sin(t * 0.7 + 2) + 1) * 0.25;
+        const b = (Math.sin(t * 1.3 + 4) + 1) * 0.25;
+
+        gl.clearColor(r, g, b, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        requestAnimationFrame(render);
+      }
+
+      requestAnimationFrame(render);
+    }
+
+    window.addEventListener('load', initWebGLBackground);
+  </script>
+
 </body>
+
 </html>
