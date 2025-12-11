@@ -5,7 +5,8 @@
   <title>Imitation Game – Loading Typefoundry</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Canonical URL -->
+  <!-- Canonical URL (optional but nice for SEO) -->
+  <link rel="canonical" href="https://loadingdots.space/Tabs/Imitation%20Game/" />
 
   <link rel="stylesheet" href="../../css/style.css" />
 
@@ -314,7 +315,8 @@
       <a href="https://loadingdots.space" class="brand-link">loadingdots.space</a>
       <div class="bar-links">
         <a href="https://loadingdots.space/#home" class="nav-link">Home</a>
-        <a href="https://loadingdots.space/#menu" class="nav-link main-link">All Fonts</a>
+        <!-- CHANGED #menu → #fonts -->
+        <a href="https://loadingdots.space/#fonts" class="nav-link main-link">All Fonts</a>
         <a href="https://loadingdots.space/#about-contact" class="nav-link">About</a>
       </div>
     </div>
@@ -521,7 +523,7 @@
     const heroTitle = document.querySelector('.imitation-hero');
     function animateHeroPosi(ts) {
       if (!heroTitle) return;
-      const t = ts / 1000;              // seconds
+      const t = ts / 1000;
       const v = Math.round((Math.sin(t * 0.7) + 1) * 50); // 0–100
       heroTitle.style.fontVariationSettings = `"POSI" ${v}`;
       requestAnimationFrame(animateHeroPosi);
